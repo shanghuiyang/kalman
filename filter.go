@@ -10,7 +10,7 @@ type Config struct {
 	// Slightly larger than qp to allow gradual speed changes.
 	ProcessNoiseVel float64
 
-	// MeasurementNoise is the GPS observation noise variance (R diagonal).
+	// MeasurementNoise is the GPS Measurement noise variance (R diagonal).
 	// Larger → less trust in GPS readings.
 	MeasurementNoise float64
 
@@ -40,7 +40,7 @@ func DefaultConfig() Config {
 }
 
 // Filter is a route-guided Kalman filter for 2-D position tracking.
-// Call Update() once per GPS observation; internal state is preserved
+// Call Update() once per GPS Measurement; internal state is preserved
 // between calls so the filter accumulates history automatically.
 type Filter struct {
 	cfg   Config
@@ -56,7 +56,7 @@ type Filter struct {
 	R  Mat2
 
 	smoothSpeed float64
-	prev        Point // previous GPS observation
+	prev        Point // previous GPS Measurement
 	ready       bool  // true after first Update call
 }
 
@@ -94,7 +94,7 @@ func NewFilter(route []Point, cfg Config) *Filter {
 	}
 }
 
-// Update accepts a single GPS observation, runs one predict-update cycle,
+// Update accepts a single GPS Measurement, runs one predict-update cycle,
 // and returns the inferred position. The filter keeps all internal state
 // (position, velocity, covariance, speed EMA) between calls, so you
 // simply feed points one at a time in chronological order.
